@@ -22,10 +22,12 @@
 }
 
 - (IBAction)action:(id)sender {
-    
     CTCustomPopView * view = [[CTCustomPopView alloc]initWithTitle:@"自定义弹出框" message:@"自定义弹出框详细信息自定义弹出框详细信息自定义弹出框详细信息自定义弹出框详细信息自定义弹出框详细信息自定义弹出框详细信息"];
     __weak typeof(CTCustomPopView) *weakPopUpView = view;
     view.clickBackgroundHide = YES;
+    view.messageColor = [UIColor colorWithRed:92/255.0 green:92/255.0 blue:92/255.0 alpha:1];
+    view.titleSpace = 20.f;
+    view.messageSpace = 25.f;
     view.titleFont = [UIFont systemFontOfSize:18];
     view.titleColor = [UIColor blackColor];
     view.messageFont = [UIFont systemFontOfSize:16];
@@ -47,10 +49,10 @@
         
     }];
 
-    [view addCustomTextFieldForPlaceholder:@"自定义输入框1" text:@"" secureEntry:NO];
-    [view addCustomTextFieldForPlaceholder:@"自定义输入框2" text:@"" secureEntry:NO];
-
-    [view showPopView:self.view];
+    [view addCustomTextFieldForPlaceholder:@"自定义输入框1" maxInputCharacter:3 text:@"" secureEntry:NO];
+    [view addCustomTextFieldForPlaceholder:@"自定义输入框2" maxInputCharacter:3 text:@"" secureEntry:NO];
+    
+    [view showPopView];
     
 }
 @end

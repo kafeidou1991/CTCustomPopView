@@ -7,14 +7,16 @@
 //
 
 #import "CTCustomPopView.h"
+#import "CTCustomTextfield.h"
+#import "ScreenBlurry.h"
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 
 #define TitleLabelFont [UIFont systemFontOfSize:18]
 #define TitleLabelTextColor [UIColor blackColor]
-#define MessageLabelFont [UIFont systemFontOfSize:16]
-#define ButtonFont [UIFont systemFontOfSize:17]
+#define MessageLabelFont [UIFont systemFontOfSize:15]
+#define ButtonFont [UIFont systemFontOfSize:15]
 #define TextFieldFont [UIFont systemFontOfSize:15]
 
 #define LineBackGroundColor [UIColor lightGrayColor] //分割线的颜色
@@ -29,7 +31,7 @@ static CGFloat const messageLeftOrRightSpace = 15.f; //message与contentView 左
 static CGFloat const lineHeight = .5f;  //控件之间的分割线宽
 static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView左右之间的间隙
 
-@interface CTCustomPopView ()<UIGestureRecognizerDelegate> {
+@interface CTCustomPopView ()<UIGestureRecognizerDelegate,UITextFieldDelegate> {
     NSString * titleStr;
     NSString * messageStr;
     CGFloat contentHeight;  //显示视图高度
@@ -41,6 +43,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
 @property (nonatomic, strong) NSMutableArray * controlsArray;  //存放button 或者textfield的数组
 @property (nonatomic, strong) NSMutableArray<UIButton *> *  buttonsArray; //  全局 谁为了 计算键盘弹出 是否需要frame改变
 @property (nonatomic, strong) NSMutableArray * clickBlockArray;  //存放点击block的回调
+@property (nonatomic, strong) NSMutableArray * textFieldMaxValueArray; //存放输入框可输入的最大值
 @end
 
 @implementation CTCustomPopView
@@ -50,7 +53,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
     if (self = [super init]) {
         titleStr = title;
         messageStr = message;
-        contentHeight = 0;
+        contentHeight = space;
         
     }
     return self;
@@ -59,7 +62,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
 -(instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-        self.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.5]; //黑色半透明
+        self.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.4]; //黑色半透明
         self.alpha = 0;
         
         [self _initPropertyValue];
@@ -111,17 +114,20 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
     [self _hiddenPopView];
 }
 
-- (void)addCustomTextFieldForPlaceholder:(NSString *)placeholder text:(NSString *)text secureEntry:(BOOL)secureEntry {
-    UITextField * textfield = [[UITextField alloc] init];
+- (void)addCustomTextFieldForPlaceholder:(NSString *)placeholder maxInputCharacter:(int)maxValue text:(NSString *)text secureEntry:(BOOL)secureEntry {
+    CTCustomTextfield * textfield = [[CTCustomTextfield alloc] init];
     textfield.text = text;
     textfield.placeholder = placeholder;
     textfield.clearButtonMode = UITextFieldViewModeWhileEditing;
     textfield.secureTextEntry = secureEntry;
+    textfield.delegate = self;
     [_contentView addSubview:textfield];
+    [textfield addTimerDuration:10 block:^{
+        NSLog(@"点击了验证码");
+    }];
     [self.controlsArray addObject:textfield];
+    [self.textFieldMaxValueArray addObject:@(maxValue)];
 }
-
-
 #pragma mark - load subView frame
 - (void) _layoutSubViewsFrame {
     //分别设置frame
@@ -135,20 +141,23 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
 }
 //title Frame
 - (void) _setTitleLabelFrame {
-    NSAssert((titleStr || ![titleStr isEqualToString:@""]), @"title为空");
+    if (!titleStr || [titleStr isEqualToString:@""]) {
+        contentHeight += self.titleSpace;
+        return;
+    }
     //目前只支持 单行显示  后期如果需要多行可以再此处 添加多行
     _titleLabel.font = self.titleFont;
     _titleLabel.text = titleStr;
     _titleLabel.textColor = self.titleColor;
-    CGFloat titleHeight = 25.f;
+    CGFloat titleHeight = 15.f;
     _titleLabel.frame = CGRectMake(titleLeftOrRightSpace, contentHeight, contentViewWidth - 2 * titleLeftOrRightSpace, titleHeight);
-    contentHeight = titleHeight + space;
+    contentHeight += titleHeight + self.titleSpace;
 }
 
 //message Frame
 - (void) _setMessageLabelFrame {
-    //    NSAssert((messageStr || ![messageStr isEqualToString:@""]), @"描述信息为空");
     if (!messageStr || [messageStr isEqualToString:@""]) {
+        contentHeight += self.messageSpace;
         return;
     }
     _messageLabel.text = messageStr;
@@ -158,7 +167,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
     
     _messageLabel.frame =  CGRectMake(messageLeftOrRightSpace, contentHeight, contentViewWidth - 2 * messageLeftOrRightSpace, size.height);
     
-    contentHeight = _messageLabel.frame.origin.y + _messageLabel.frame.size.height + space;
+    contentHeight = _messageLabel.frame.origin.y + _messageLabel.frame.size.height + self.messageSpace;
 }
 //controls Frame
 - (void) _setControlsFrame {
@@ -169,7 +178,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
     self.buttonsArray = @[].mutableCopy;
     NSMutableArray * textFieldsMuArray = @[].mutableCopy;
     for (id obj in self.controlsArray) {
-        if ([obj isKindOfClass:[UITextField class]]) {
+        if ([obj isKindOfClass:[CTCustomTextfield class]]) {
             [textFieldsMuArray addObject:obj];
         }else if ([obj isKindOfClass:[UIButton class]]){
             [self.buttonsArray addObject:obj];
@@ -201,7 +210,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
     
     CGFloat top = contentHeight;
     for (int i = 0; i < textfieldArray.count; i ++) {
-        UITextField * textfield = textfieldArray[i];
+        CTCustomTextfield * textfield = textfieldArray[i];
         textfield.tag = 100 + i;
         textfield.font = self.textFieldFont;
         textfield.textColor = self.textFieldColor;
@@ -215,7 +224,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
         }
     }
     
-    UITextField *lastTf = textfieldArray.lastObject;
+    CTCustomTextfield *lastTf = textfieldArray.lastObject;
     textFieldBgView.frame = CGRectMake(textfieldLeftOrRightSpace, top, contentViewWidth - 2 * textfieldLeftOrRightSpace, CGRectGetMaxY(lastTf.frame) - top);
     
     contentHeight += CGRectGetHeight(textFieldBgView.frame) + space;
@@ -260,11 +269,12 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
     }
 }
 #pragma mark - pop Medthod & animation
-- (void)showPopView:(UIView *)view {
+- (void)showPopView {
     [self _layoutSubViewsFrame];
     [self _showPopAnimation];
     //将视图添加
-    [view addSubview:self];
+    [ScreenBlurry addBlurryScreenImageRadius:5];
+    [[UIApplication sharedApplication].keyWindow addSubview:self];
     //背景渐变
     [UIView animateWithDuration:animationDuration animations:^{
         self.alpha = 1.0;
@@ -272,6 +282,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
 }
 
 - (void) _hiddenPopView {
+    [ScreenBlurry removeBlurryScreenImage];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self _hiddenPopAnimation];
     [UIView animateWithDuration:animationDuration animations:^{
@@ -360,6 +371,25 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
         _clickBlockArray = [NSMutableArray arrayWithCapacity:0];
     }
     return _clickBlockArray;
+}
+- (NSMutableArray *)textFieldMaxValueArray {
+    if (!_textFieldMaxValueArray) {
+        _textFieldMaxValueArray = [NSMutableArray arrayWithCapacity:0];
+    }
+    return _textFieldMaxValueArray;
+}
+
+#pragma mark - textfield delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self endEditing:YES];
+    return YES;
+}
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSNumber * maxValue = self.textFieldMaxValueArray[textField.tag - 100];
+    if (textField.text.length >= maxValue.integerValue) {
+        return NO;
+    }
+    return YES;
 }
 #pragma mark - GestureRecognizerDelegate
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {

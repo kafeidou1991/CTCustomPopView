@@ -29,7 +29,15 @@ typedef void(^ClickBlock)(UIButton * btn);
  */
 @property (nonatomic, strong) UIColor * titleColor;
 /**
- 消息字体大小 默认16
+ title距离下方控件的空隙
+ */
+@property (nonatomic, assign) CGFloat titleSpace;
+/**
+ message距离下方控件的空隙
+ */
+@property (nonatomic, assign) CGFloat messageSpace;
+/**
+ 消息字体大小 默认15
  */
 @property (nonatomic, strong) UIFont * messageFont;
 /**
@@ -37,7 +45,7 @@ typedef void(^ClickBlock)(UIButton * btn);
  */
 @property (nonatomic, strong) UIColor * messageColor;
 /**
- 按钮字体颜色 默认17
+ 按钮字体颜色 默认15
  */
 @property (nonatomic, strong) UIFont * buttonFont;
 /**
@@ -53,6 +61,7 @@ typedef void(^ClickBlock)(UIButton * btn);
  分割线的颜色 默认 lightGray
  */
 @property (nonatomic, strong) UIColor * lineColor;
+
 
 #pragma mark - Method
 /**
@@ -77,17 +86,17 @@ typedef void(^ClickBlock)(UIButton * btn);
  添加一个textfield
 
  @param placeholder 提示文字
+ @param maxValue 可输入最大的值
  @param text 内容
  @param secureEntry 是否开启安全
  */
-- (void)addCustomTextFieldForPlaceholder:(NSString *)placeholder text:(NSString *)text secureEntry:(BOOL)secureEntry;
+- (void)addCustomTextFieldForPlaceholder:(NSString *)placeholder maxInputCharacter:(int)maxValue text:(NSString *)text secureEntry:(BOOL)secureEntry;
+//- (void)addCustomTextFieldWithTimer:(BOOL)isTimer placeholder:(NSString *)placeholder maxInputCharacter:(int)maxValue text:(NSString *)text secureEntry:(BOOL)secureEntry;
 
 /**
- 呈现在superView
-
- @param view 父视图
+ 呈现在window
  */
-- (void)showPopView:(UIView *)view;
+- (void)showPopView;
 
 
 @end

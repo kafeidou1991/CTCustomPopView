@@ -15,7 +15,10 @@
 		B9364BD41F2B1D0F0081486E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9364BD21F2B1D0F0081486E /* LaunchScreen.storyboard */; };
 		B9364BDF1F2B1D0F0081486E /* DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B9364BDE1F2B1D0F0081486E /* DemoTests.m */; };
 		B9364BEA1F2B1D0F0081486E /* DemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = B9364BE91F2B1D0F0081486E /* DemoUITests.m */; };
-		B97E66B11F3055BA00629BCF /* CTCustomPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = B97E66B01F3055BA00629BCF /* CTCustomPopView.m */; };
+		B963EDE91F3D510F006ADA5A /* ScreenBlurry.m in Sources */ = {isa = PBXBuildFile; fileRef = B963EDE61F3D510F006ADA5A /* ScreenBlurry.m */; };
+		B963EDEA1F3D510F006ADA5A /* UIImage+BlurGlass.m in Sources */ = {isa = PBXBuildFile; fileRef = B963EDE81F3D510F006ADA5A /* UIImage+BlurGlass.m */; };
+		B963EDF01F3D521D006ADA5A /* CTCustomPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = B963EDED1F3D521D006ADA5A /* CTCustomPopView.m */; };
+		B963EDF11F3D521D006ADA5A /* CTCustomTextfield.m in Sources */ = {isa = PBXBuildFile; fileRef = B963EDEF1F3D521D006ADA5A /* CTCustomTextfield.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,8 +55,14 @@
 		B9364BE51F2B1D0F0081486E /* DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9364BE91F2B1D0F0081486E /* DemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoUITests.m; sourceTree = "<group>"; };
 		B9364BEB1F2B1D0F0081486E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B97E66AF1F3055BA00629BCF /* CTCustomPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTCustomPopView.h; sourceTree = "<group>"; };
-		B97E66B01F3055BA00629BCF /* CTCustomPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTCustomPopView.m; sourceTree = "<group>"; };
+		B963EDE51F3D510F006ADA5A /* ScreenBlurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenBlurry.h; sourceTree = "<group>"; };
+		B963EDE61F3D510F006ADA5A /* ScreenBlurry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenBlurry.m; sourceTree = "<group>"; };
+		B963EDE71F3D510F006ADA5A /* UIImage+BlurGlass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlurGlass.h"; sourceTree = "<group>"; };
+		B963EDE81F3D510F006ADA5A /* UIImage+BlurGlass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BlurGlass.m"; sourceTree = "<group>"; };
+		B963EDEC1F3D521D006ADA5A /* CTCustomPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTCustomPopView.h; sourceTree = "<group>"; };
+		B963EDED1F3D521D006ADA5A /* CTCustomPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTCustomPopView.m; sourceTree = "<group>"; };
+		B963EDEE1F3D521D006ADA5A /* CTCustomTextfield.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTCustomTextfield.h; sourceTree = "<group>"; };
+		B963EDEF1F3D521D006ADA5A /* CTCustomTextfield.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTCustomTextfield.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,9 +117,12 @@
 				B9364BC81F2B1D0F0081486E /* AppDelegate.m */,
 				B9364BCA1F2B1D0F0081486E /* ViewController.h */,
 				B9364BCB1F2B1D0F0081486E /* ViewController.m */,
-				B97E66AF1F3055BA00629BCF /* CTCustomPopView.h */,
-				B97E66B01F3055BA00629BCF /* CTCustomPopView.m */,
+				B963EDEC1F3D521D006ADA5A /* CTCustomPopView.h */,
+				B963EDED1F3D521D006ADA5A /* CTCustomPopView.m */,
+				B963EDEE1F3D521D006ADA5A /* CTCustomTextfield.h */,
+				B963EDEF1F3D521D006ADA5A /* CTCustomTextfield.m */,
 				B9364BCD1F2B1D0F0081486E /* Main.storyboard */,
+				B963EDE41F3D510F006ADA5A /* ScreenBlurry */,
 				B9364BD01F2B1D0F0081486E /* Assets.xcassets */,
 				B9364BD21F2B1D0F0081486E /* LaunchScreen.storyboard */,
 				B9364BD51F2B1D0F0081486E /* Info.plist */,
@@ -143,6 +155,17 @@
 				B9364BEB1F2B1D0F0081486E /* Info.plist */,
 			);
 			path = DemoUITests;
+			sourceTree = "<group>";
+		};
+		B963EDE41F3D510F006ADA5A /* ScreenBlurry */ = {
+			isa = PBXGroup;
+			children = (
+				B963EDE51F3D510F006ADA5A /* ScreenBlurry.h */,
+				B963EDE61F3D510F006ADA5A /* ScreenBlurry.m */,
+				B963EDE71F3D510F006ADA5A /* UIImage+BlurGlass.h */,
+				B963EDE81F3D510F006ADA5A /* UIImage+BlurGlass.m */,
+			);
+			path = ScreenBlurry;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,10 +301,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B97E66B11F3055BA00629BCF /* CTCustomPopView.m in Sources */,
+				B963EDF01F3D521D006ADA5A /* CTCustomPopView.m in Sources */,
+				B963EDEA1F3D510F006ADA5A /* UIImage+BlurGlass.m in Sources */,
+				B963EDF11F3D521D006ADA5A /* CTCustomTextfield.m in Sources */,
 				B9364BCC1F2B1D0F0081486E /* ViewController.m in Sources */,
 				B9364BC91F2B1D0F0081486E /* AppDelegate.m in Sources */,
 				B9364BC61F2B1D0F0081486E /* main.m in Sources */,
+				B963EDE91F3D510F006ADA5A /* ScreenBlurry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

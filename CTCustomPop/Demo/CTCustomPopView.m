@@ -53,7 +53,7 @@ static CGFloat const textfieldLeftOrRightSpace = 20.f; //textfield与contentView
     if (self = [super init]) {
         titleStr = title;
         messageStr = message;
-        contentHeight = space;
+        contentHeight = space * 2;
         
     }
     return self;

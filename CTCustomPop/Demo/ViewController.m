@@ -19,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"1");
 }
 
 - (IBAction)action:(id)sender {
